@@ -68,12 +68,11 @@
     }
   ],
   "lazer": [
-    { "item": "Piscina adulta", "dia": "piscina-d", "noite": "piscina-n", "alt": "Piscina adulta com deck" },
-    { "item": "Piscina infantil", "dia": "agua", "alt": "Água da piscina em detalhe" },
+    { "item": "Piscina", "dia": "piscina-d", "noite": "piscina-n", "alt": "Piscina com deck" },
     { "item": "Playground", "dia": "play", "alt": "Crianças brincando no playground" },
     { "item": "Pomar exclusivo", "dia": "pomar", "alt": "Pomar com jabuticabeiras" },
     { "item": "Espaço pet", "dia": "pet", "alt": "Cachorro saltando no espaço pet" },
-    { "item": "2 mini salões de festas", "dia": "lazer-d", "noite": "lazer-n", "alt": "Área de lazer vista do alto, com salão, piscina e playground" },
+    { "item": "2 espaços gourmet", "dia": "lazer-d", "noite": "lazer-n", "alt": "Área de lazer vista do alto, com espaço gourmet, piscina e playground" },
     { "item": "Áreas para eventos com churrasqueira", "dia": "churrasqueira", "alt": "Família almoçando na área da churrasqueira" },
     { "item": "Áreas de convivência e paisagismo", "dia": "deck", "alt": "Mesas e cadeiras ao lado da piscina" }
   ],
