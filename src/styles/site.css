@@ -350,15 +350,52 @@ h1,.h2,.end h2,.spec b,.vals b,.lamp-line,.end__phr,.card h3,.ft__sig,.cmp__tag,
 }
 @media(min-width:760px) and (max-width:1099px){.ent__head{width:calc(100% - 2*var(--gut) - 400px)}.ent__p{display:none}}
 
-/* celular: o painel vira uma folha na metade de baixo, com o título; no mapa ficam só os pontos */
+/* peças só do celular (régua de pontos): escondidas no computador */
+.ent__det,.ent__go,.ent__regua{display:none}
+
+/* celular: mapa livre, texto sobre a mata, régua de pontos que desliza e "Como chegar" como gaveta.
+   Deslizar a régua já leva a câmera até o ponto que parou no começo dela (Entorno.tsx) */
 @media(max-width:759px){
-  .ent__scrim,.ent__head{display:none}
-  .ent__panel{left:0;right:0;bottom:0;width:auto;max-height:calc(46% + var(--dock));padding-bottom:var(--dock);border-radius:16px 16px 0 0;background:rgba(12,20,38,.95)}
-  .ent__mhead{display:block;padding:18px 20px 10px}
-  .ent__mhead .ent__h{font-size:26px}
-  .ent__row{padding:12px 20px}
-  .ent__hud{left:16px;top:84px}
-  .ent__tudo{top:80px}
+  .ent{--regua:76px}
+  .ent__scrim{width:100%;height:68%;background:linear-gradient(0deg,rgba(10,18,32,.92) 0%,rgba(10,18,32,.55) 45%,rgba(10,18,32,0) 100%)}
+  .ent__head,.ent__det{left:16px;right:16px;width:auto;bottom:calc(var(--dock) + var(--regua) + 16px)}
+  .ent__head{gap:8px}
+  .ent__head .ent__h{font-size:30px}
+  .ent__head .ent__p{font-size:14px}
+  .ent__head .mode,.ent__tudo{display:none}
+  .ent__det{position:absolute;display:grid;gap:8px;justify-items:start;animation:fade .4s var(--ease) both}
+  .ent__det small{font:600 10px/1.2 var(--f);letter-spacing:.14em;text-transform:uppercase;color:#C9D3E4}
+  .ent__det b{font:300 28px/1.05 var(--ft);letter-spacing:-.015em;color:#fff}
+  .ent__det p{font-size:14px;line-height:1.5;color:#D5DCE8}
+  .ent__det .ent__obs{font-size:13px;color:#C9D3E4}
+  .ent__acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .ent__acts .btn{min-height:42px;padding:0 14px;font-size:14px}
+  .ent__ghost{background:transparent;color:#EEF2F8;box-shadow:inset 0 0 0 1px rgba(238,242,248,.45)}
+  .ent__go{position:absolute;right:16px;top:84px;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border:0;border-radius:4px;background:var(--a);color:#101A2E;font:600 14px/1 var(--f);cursor:pointer;box-shadow:0 10px 24px -10px rgba(0,0,0,.6)}
+  .ent__go::after{content:"";width:7px;height:7px;border-right:2px solid currentColor;border-top:2px solid currentColor;transform:rotate(45deg)}
+  /* o texto do ponto fica sobre a foto: o degradê continua; as coordenadas já estão na gaveta */
+  .ent.is-focus .ent__scrim{opacity:1}
+  .ent__hud{display:none}
+  .ent__regua{position:absolute;left:0;right:0;bottom:var(--dock);display:block;background:rgba(12,20,38,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--rule)}
+  /* cartões a 72% da tela: o próximo aparece cortado na borda e mostra que dá para deslizar */
+  .ent__regua ol{display:flex;overflow-x:auto;padding-inline:16px;scroll-padding-inline:16px;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;scrollbar-width:none}
+  .ent__regua ol::-webkit-scrollbar{display:none}
+  .ent__regua li{flex:0 0 72%;scroll-snap-align:start}
+  .ent__regua li+li .ent__cel{border-left:1px solid var(--rule)}
+  .ent__cel{width:100%;height:var(--regua);display:grid;gap:6px;align-content:center;padding:0 16px;border:0;background:none;color:#EEF2F8;text-align:left;font:inherit;cursor:pointer;transition:background-color .2s}
+  .ent__cel i{font:600 10px/1 var(--f);font-style:normal;letter-spacing:.14em;text-transform:uppercase;color:#A9B5CA}
+  .ent__cel b{font:500 15px/1.25 var(--f)}
+  .ent__cel.on{background:rgba(247,199,102,.12)}
+  .ent__cel.on b{color:var(--a)}
+  /* o painel do computador vira a gaveta do "Como chegar" */
+  .ent__panel{display:none}
+  .ent.is-gaveta .ent__panel{display:flex;left:0;right:0;bottom:0;width:auto;max-height:calc(100% - 76px);padding-bottom:var(--dock);border-radius:16px 16px 0 0;background:rgba(12,20,38,.97);animation:sobe .4s var(--ease) both}
+  .ent.is-gaveta .ent__go{display:none}
+  @keyframes sobe{from{opacity:0;transform:translateY(32px)}}
+  .ent__tabs{display:none}
+  .ent__mhead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px 4px}
+  .ent__mhead p{font:300 26px/1.1 var(--ft);color:#fff}
+  .ent__mhead button{min-height:36px;padding:0 12px;border:1px solid var(--rule);border-radius:4px;background:transparent;color:#EEF2F8;font:600 13px/1 var(--f);cursor:pointer}
   .mk:not(.on) .mk__lbl{display:none}
   .mk__lbl i{display:none}
   .mk__lbl b{font-size:13px}

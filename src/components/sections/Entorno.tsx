@@ -88,12 +88,18 @@ export function Entorno() {
   const [copiado, setCopiado] = useState(false);
   const [origem, setOrigem] = useState("");
   const [gps, setGps] = useState<"" | "buscando" | "erro">("");
+  const [gaveta, setGaveta] = useState(false); // celular: "Como chegar" aberto por cima da régua
   const stage = useRef<HTMLDivElement>(null);
   const scene = useRef<HTMLDivElement>(null);
   const painel = useRef<HTMLElement>(null);
   const lista = useRef<HTMLDivElement>(null);
+  const regua = useRef<HTMLOListElement>(null);
+  const titulo = useRef<HTMLDivElement>(null);
+  const detalhe = useRef<HTMLDivElement>(null);
   const bordas = useRef<(HTMLDivElement | null)[]>([]);
   const cam = useRef({ z: 1, x: C.x, y: 560 });
+  const ativoRef = useRef<number | null>(null);
+  const reguaAuto = useRef(false); // a régua foi rolada pelo código (não pelo dedo)
 
   // escala de "cobrir" o quadro inteiro (mede na hora: o ResizeObserver não roda com a aba em segundo plano)
   function medir() {
@@ -103,13 +109,17 @@ export function Entorno() {
     return { w, h, s0: Math.max(w / FW, h / FH) };
   }
 
-  // parte da tela que fica livre: tira o cabeçalho do site e, no celular, a folha de baixo
+  // parte da tela que fica livre: tira o cabeçalho do site e, no celular, o que fica embaixo
+  // (texto sobre a mata, régua dos pontos e, se aberta, a gaveta do "Como chegar")
   function livre(w: number, h: number) {
+    if (w >= CELULAR) return { y0: TOPO, y1: h };
     const p = painel.current;
-    return { y0: TOPO, y1: h - (w < CELULAR && p ? p.offsetHeight : 0) };
+    const embaixo = [regua.current?.parentElement, detalhe.current ?? titulo.current, p && p.offsetParent ? p : null];
+    const topos = embaixo.filter((el): el is HTMLElement => !!el && el.offsetParent !== null).map((el) => el.offsetTop);
+    return { y0: TOPO, y1: Math.max(TOPO + 140, Math.min(h, ...topos)) };
   }
 
-  // caixa do painel flutuante (só no computador; no celular ele é a folha de baixo, já descontada em livre())
+  // caixa do painel flutuante (só no computador; no celular a parte de baixo já sai em livre())
   function caixaPainel(w: number) {
     const p = painel.current;
     if (!p || w < CELULAR) return null;
@@ -160,7 +170,8 @@ export function Entorno() {
     cam.current = visaoGeral();
     const ro = new ResizeObserver(() => aplicar());
     ro.observe(el);
-    if (painel.current) ro.observe(painel.current); // o painel cresce quando um ponto abre
+    // o painel cresce quando um ponto abre; no celular o texto sobre a mata muda de altura
+    [painel.current, titulo.current, regua.current?.parentElement].forEach((x) => x && ro.observe(x));
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return;
@@ -216,6 +227,8 @@ export function Entorno() {
 
   function focar(i: number | null) {
     setAtivo(i);
+    ativoRef.current = i;
+    setGaveta(false);
     if (i === null) {
       cam.current = visaoGeral();
     } else {
@@ -243,17 +256,80 @@ export function Entorno() {
     aplicar();
   }
 
-  // depois que o item abre na lista: rola a lista até ele e reenquadra (o painel mudou de altura)
+  // depois que o ponto abre: rola a lista (computador) ou a régua (celular) até ele e reenquadra,
+  // porque o painel ou o texto de baixo mudaram de altura
   useEffect(() => {
     aplicar();
-    if (ativo === null || !lista.current) return;
-    const li = lista.current.querySelector<HTMLElement>(`[data-i="${ativo}"]`);
-    if (li) lista.current.scrollTo({ top: li.offsetTop - 8, behavior: "smooth" });
+    if (ativo === null) return;
+    const li = lista.current?.querySelector<HTMLElement>(`[data-i="${ativo}"]`);
+    if (li && lista.current) lista.current.scrollTo({ top: li.offsetTop - 8, behavior: "smooth" });
+    const ol = regua.current;
+    const cel = ol?.children[ativo] as HTMLElement | undefined;
+    if (ol && cel && ol.clientWidth) {
+      const alvo = Math.min(cel.offsetLeft - 16, ol.scrollWidth - ol.clientWidth);
+      if (Math.abs(alvo - ol.scrollLeft) > 2) {
+        reguaAuto.current = true;
+        ol.scrollTo({ left: alvo, behavior: "smooth" });
+      }
+    }
     const esc = (e: KeyboardEvent) => e.key === "Escape" && focar(null);
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ativo, aba]);
+
+  // celular: deslizar a régua já mostra o ponto que parou no começo dela
+  useEffect(() => {
+    const ol = regua.current;
+    if (!ol) return;
+    let timer = 0;
+    const rolou = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (reguaAuto.current) {
+          reguaAuto.current = false;
+          return;
+        }
+        if (!ol.clientWidth) return;
+        let melhor = 0;
+        let dist = Infinity;
+        [...ol.children].forEach((c, i) => {
+          const d = Math.abs((c as HTMLElement).offsetLeft - 16 - ol.scrollLeft);
+          if (d < dist) {
+            dist = d;
+            melhor = i;
+          }
+        });
+        if (melhor !== ativoRef.current) focar(melhor);
+      }, 140);
+    };
+    ol.addEventListener("scroll", rolou, { passive: true });
+    return () => {
+      ol.removeEventListener("scroll", rolou);
+      window.clearTimeout(timer);
+    };
+    // focar só usa refs e setters
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // gaveta do "Como chegar" no celular: reenquadra ao abrir/fechar e fecha no Esc
+  useEffect(() => {
+    aplicar();
+    if (!gaveta) return;
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && fecharGaveta();
+    window.addEventListener("keydown", esc);
+    return () => window.removeEventListener("keydown", esc);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [gaveta]);
+
+  function abrirGaveta() {
+    setAba("chegar");
+    setGaveta(true);
+  }
+  function fecharGaveta() {
+    setGaveta(false);
+    setAba("pontos");
+  }
 
   const abrir = (url: string) => {
     const w = window.open(url, "_blank", "noopener");
@@ -288,8 +364,10 @@ export function Entorno() {
     }
   }
 
+  const sel = ativo !== null ? pontos[ativo] : null;
+
   return (
-    <section className={`ent${intro ? " is-intro" : ""}${ativo !== null ? " is-focus" : ""}`} id="entorno" aria-labelledby="ent-h">
+    <section className={`ent${intro ? " is-intro" : ""}${sel ? " is-focus" : ""}${gaveta ? " is-gaveta" : ""}`} id="entorno" aria-labelledby="ent-h">
       <div className="ent__stage" ref={stage}>
         <div className="ent__scene" ref={scene}>
           <div className="ent__zoom">
@@ -359,7 +437,7 @@ export function Entorno() {
       </div>
 
       <div className="ent__scrim" />
-      <div className="ent__head">
+      <div className="ent__head" ref={titulo}>
         <h2 className="ent__h" id="ent-h">
           {t.titulo}
         </h2>
@@ -367,12 +445,49 @@ export function Entorno() {
         <ModeToggle />
       </div>
 
+      {/* celular (régua de pontos): o ponto escolhido aparece sobre a mata, acima da régua */}
+      {sel && (
+        <div className="ent__det" ref={detalhe} aria-live="polite">
+          <small>{categoria(sel)}</small>
+          <b>{sel.nome}</b>
+          <p>{sel.texto}</p>
+          <div className="ent__acts">
+            {sel.destino ? (
+              <a className="btn btn--lamp" href={rotaAte(sel.destino)} target="_blank" rel="noopener">
+                Rota a partir do condomínio
+              </a>
+            ) : (
+              <p className="ent__obs">Obra prevista. A rota entra quando o endereço estiver no Google Maps.</p>
+            )}
+            <button type="button" className="btn ent__ghost" onClick={() => focar(null)}>
+              Ver tudo
+            </button>
+          </div>
+        </div>
+      )}
+      <button type="button" className="ent__go" aria-expanded={gaveta} aria-controls="ent-aba-c" onClick={abrirGaveta}>
+        Como chegar
+      </button>
+      <nav className="ent__regua" aria-label="Pontos próximos">
+        <ol ref={regua}>
+          {pontos.map((q, i) => (
+            <li key={q.id}>
+              <button type="button" className={`ent__cel${ativo === i ? " on" : ""}`} aria-pressed={ativo === i} onClick={() => focar(ativo === i ? null : i)}>
+                <i>{categoria(q)}</i>
+                <b>{q.nome}</b>
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
+
       <aside className="ent__panel" ref={painel} aria-label="Pontos próximos e como chegar">
-        {/* celular: o título vem para a folha (o Dia/Noite fica no menu do site) */}
+        {/* celular: o painel só aparece como gaveta do "Como chegar" */}
         <div className="ent__mhead">
-          <p className="ent__h" aria-hidden="true">
-            {t.titulo}
-          </p>
+          <p>Como chegar</p>
+          <button type="button" onClick={fecharGaveta}>
+            Fechar
+          </button>
         </div>
         <div className="ent__tabs" role="tablist" aria-label="Painel do mapa">
           <button type="button" role="tab" id="ent-tab-p" aria-controls="ent-aba-p" aria-selected={aba === "pontos"} onClick={() => setAba("pontos")}>
