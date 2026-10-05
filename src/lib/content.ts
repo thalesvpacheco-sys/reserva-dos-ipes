@@ -8,7 +8,7 @@ export { copy, site, galeria, entorno };
 
 export type Rua = (typeof galeria.ruas)[number];
 export type Foto = Rua["fotos"][number];
-export type Ponto = (typeof entorno.pontos)[number] & { detalhe?: string; borda?: string };
+export type Ponto = (typeof entorno.pontos)[number] & { detalhe?: string; tempo?: string; borda?: string };
 
 export const nav = [
   { href: "#localizacao", label: "Localização" },

@@ -72,7 +72,9 @@ const LUZES = (() => {
   return out;
 })();
 
-const categoria = (p: Ponto) => p.categoria + (p.detalhe ? ` / ${p.detalhe}` : "");
+// linha pequena acima do nome: categoria, detalhe e, quando o cliente informou, o tempo até lá
+const categoria = (p: Ponto) => [p.categoria, p.detalhe, p.tempo].filter(Boolean).join(" / ");
+const rotulo = (p: Ponto) => [p.categoria, p.tempo].filter(Boolean).join(" / ");
 const direcao = (p: Ponto) => (p.borda === "esquerda" ? "←" : p.borda === "direita" ? "→" : "↗");
 
 const Seta = ({ dir }: { dir: "esquerda" | "direita" }) => (
@@ -156,7 +158,8 @@ export function Entorno() {
     pontos.forEach((q, i) => {
       const el = bordas.current[i];
       if (!el) return;
-      const y = Math.min(Math.max(q.y * s + ty, f.y0 + 30), f.y1 - 30);
+      // no celular o botão "Como chegar" ocupa o canto de cima: as setas começam abaixo dele
+      const y = Math.min(Math.max(q.y * s + ty, f.y0 + (w < CELULAR ? 72 : 30)), f.y1 - 30);
       const xMax = box && y > box.t - 30 ? box.l - 40 : w - 30;
       const x = Math.min(Math.max(q.x * s + tx, 30), xMax);
       el.style.left = `${(x - tx) / s}px`;
@@ -416,7 +419,7 @@ export function Entorno() {
                 <button type="button" onClick={() => focar(ativo === i ? null : i)} aria-label={`${q.nome}: ver no mapa`}>
                   <span className="mk__dot">{q.borda && <Seta dir={q.borda as "esquerda" | "direita"} />}</span>
                   <span className="mk__lbl">
-                    <i>{q.categoria}</i>
+                    <i>{rotulo(q)}</i>
                     <b>{q.nome}</b>
                   </span>
                 </button>

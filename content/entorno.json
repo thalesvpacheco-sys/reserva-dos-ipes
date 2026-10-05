@@ -3,7 +3,10 @@
   "largura": 1920,
   "altura": 1080,
   "alt": "Vista aérea do Parque dos Buritis com o terreno do Reserva dos Ipês destacado e os pontos próximos",
-  "condominio": { "x": 930, "y": 615 },
+  "condominio": {
+    "x": 930,
+    "y": 615
+  },
   "lote": "661,665 985,514 1210,545 985,722 895,772",
   "pontos": [
     {
@@ -20,8 +23,7 @@
     {
       "id": "salut",
       "categoria": "Saúde",
-      "nome": "Complexo de Saúde Salut",
-      "detalhe": "Futuro",
+      "nome": "Futuro Complexo da Saúde",
       "texto": "Complexo de saúde previsto para a região.",
       "destino": null,
       "x": 938,
@@ -39,6 +41,18 @@
       "lado": "esquerda"
     },
     {
+      "id": "flamboyant",
+      "categoria": "Compras e lazer",
+      "tempo": "a 15 minutos",
+      "nome": "Flamboyant Shopping",
+      "texto": "O Flamboyant Shopping, em Goiânia, a 15 minutos do condomínio.",
+      "destino": "Flamboyant Shopping, Goiânia - GO",
+      "x": 1886,
+      "y": 140,
+      "lado": "esquerda",
+      "borda": "direita"
+    },
+    {
       "id": "costa",
       "categoria": "Compras",
       "nome": "Costa Atacadão",
@@ -46,6 +60,18 @@
       "destino": "Costa Atacadão Senador Canedo",
       "x": 34,
       "y": 400,
+      "lado": "direita",
+      "borda": "esquerda"
+    },
+    {
+      "id": "praca",
+      "categoria": "Lazer",
+      "tempo": "a 5 minutos",
+      "nome": "Praça das Artes",
+      "texto": "A Praça das Artes de Senador Canedo, a 5 minutos do condomínio.",
+      "destino": "Praça das Artes, Senador Canedo - GO",
+      "x": 34,
+      "y": 540,
       "lado": "direita",
       "borda": "esquerda"
     },
