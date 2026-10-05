@@ -1,0 +1,72 @@
+# main -> build estático (out/) -> commit na branch deploy.
+# A Hostinger (hPanel > Avançado > Git, "Implantação automática") puxa a deploy e publica no public_html.
+#
+# Secrets opcionais (Settings > Secrets and variables > Actions > Secrets):
+#   NEXT_PUBLIC_MAKE_WEBHOOK_URL  (sem ele o formulário da LP não envia)
+#   NEXT_PUBLIC_META_PIXEL_ID, NEXT_PUBLIC_GA4_ID
+#
+# Variable (Settings > Secrets and variables > Actions > Variables):
+#   sem a variable     -> teaser em "/", LP nova em "/novo/" (sem indexação)
+#   LP_NA_RAIZ = true  -> virada: LP nova em "/", teaser em "/teaser/"
+name: Deploy Hostinger
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run typecheck
+
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://reservadosipescanedo.com.br
+          NEXT_PUBLIC_MAKE_WEBHOOK_URL: ${{ secrets.NEXT_PUBLIC_MAKE_WEBHOOK_URL }}
+          NEXT_PUBLIC_META_PIXEL_ID: ${{ secrets.NEXT_PUBLIC_META_PIXEL_ID }}
+          NEXT_PUBLIC_GA4_ID: ${{ secrets.NEXT_PUBLIC_GA4_ID }}
+
+      - name: Teaser na raiz (até a virada)
+        if: vars.LP_NA_RAIZ != 'true'
+        working-directory: out
+        run: |
+          mkdir -p novo
+          mv index.html novo/index.html
+          cp teaser/index.html index.html
+          sed -i 's#<head>#<head><meta name="robots" content="noindex,nofollow">#' novo/index.html
+
+      - uses: actions/checkout@v4
+        with:
+          ref: deploy
+          path: deploy
+
+      # a deploy fica igual ao build, mas sem force push: o histórico segue linear para o git pull da Hostinger
+      - name: Publicar na branch deploy
+        working-directory: deploy
+        run: |
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a ../out/. .
+          git add -A
+          if git diff --cached --quiet; then echo "Build igual ao publicado"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "deploy: ${GITHUB_SHA::7}"
+          git push origin deploy
