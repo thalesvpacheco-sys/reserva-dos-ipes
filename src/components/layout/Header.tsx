@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { nav } from "@/lib/content";
+import { copy, nav, site } from "@/lib/content";
 import { Logo } from "@/components/ui/Logo";
 import { ModeToggle } from "@/components/ui/ModeToggle";
 
@@ -29,7 +29,7 @@ export function Header() {
         menuBtn.current?.focus();
       }
     };
-    const wide = window.matchMedia("(min-width:1180px)");
+    const wide = window.matchMedia("(min-width:1360px)");
     const onWide = (e: MediaQueryListEvent) => e.matches && setOpen(false);
     window.addEventListener("keydown", onKey);
     wide.addEventListener("change", onWide);
@@ -62,8 +62,11 @@ export function Header() {
           </nav>
           <div className="hd__act">
             <ModeToggle />
-            <a className="btn" href="#contato">
+            <a className="btn btn--line" href="#contato">
               Falar com um consultor
+            </a>
+            <a className="btn btn--lamp" href={site.simuladorUrl} target="_blank" rel="noopener">
+              {copy.condicoes.cta}
             </a>
           </div>
           <button
@@ -96,7 +99,10 @@ export function Header() {
         </nav>
         <div>
           <ModeToggle />
-          <a className="btn" href="#contato">
+          <a className="btn btn--lamp" href={site.simuladorUrl} target="_blank" rel="noopener">
+            {copy.condicoes.cta}
+          </a>
+          <a className="btn btn--line" href="#contato">
             Falar com um consultor
           </a>
         </div>

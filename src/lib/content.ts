@@ -2,18 +2,20 @@
 import copy from "@content/copy.json";
 import site from "@content/site.json";
 import galeria from "@content/galeria.json";
+import entorno from "@content/entorno.json";
 
-export { copy, site, galeria };
+export { copy, site, galeria, entorno };
 
 export type Rua = (typeof galeria.ruas)[number];
 export type Foto = Rua["fotos"][number];
+export type Ponto = (typeof entorno.pontos)[number] & { detalhe?: string; borda?: string };
 
 export const nav = [
   { href: "#localizacao", label: "Localização" },
   { href: "#condominio", label: "Condomínio" },
   { href: "#casas", label: "Casas" },
   { href: "#lazer", label: "Lazer" },
-  { href: "#ruas", label: "Ruas" },
+  { href: "#entorno", label: "Entorno" },
   { href: "#condicoes", label: "Condições" },
 ];
 

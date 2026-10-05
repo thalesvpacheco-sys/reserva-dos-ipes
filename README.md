@@ -16,7 +16,7 @@ npm start                    # serve out/ localmente
 ```
 
 ## Estrutura
-- `content/` textos (`copy.json`, verbatim do cliente), dados (`site.json`) e fotos de cada seção (`galeria.json`)
+- `content/` textos (`copy.json`, verbatim do cliente), dados (`site.json`) e fotos de cada seção (`galeria.json`) e pontos do mapa do entorno (`entorno.json`)
 - `src/app/` layout, página, ícones
 - `src/components/` `layout/` (header, rodapé, barra do celular), `sections/`, `forms/`, `ui/`
 - `src/styles/` `tokens.css` (cores e fontes) e `site.css` (estilos das seções)
@@ -28,7 +28,7 @@ Render novo: coloque em `assets-originais/IMAGENS RENDERIZADAS/`, registre em `s
 Depois use o nome em `content/galeria.json`.
 
 ## Pendências de conteúdo (`content/site.json`)
-`contato.whatsapp`, `contato.instagram`, `localizacao.enderecoCompleto`, `localizacao.mapsUrl`, `politicaPrivacidadeUrl`.
+`contato.whatsapp`, `contato.instagram`, `politicaPrivacidadeUrl`.
 Enquanto estiverem `null`, os ícones e links correspondentes não aparecem.
 
 ## Deploy

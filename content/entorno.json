@@ -1,0 +1,64 @@
+{
+  "imagem": "/localizacao-proximas/locaclose.webp",
+  "largura": 1920,
+  "altura": 1080,
+  "alt": "Vista aérea do Parque dos Buritis com o terreno do Reserva dos Ipês destacado e os pontos próximos",
+  "condominio": { "x": 930, "y": 615 },
+  "lote": "661,665 985,514 1210,545 985,722 895,772",
+  "pontos": [
+    {
+      "id": "morro",
+      "categoria": "Lazer e fé",
+      "nome": "Morro Santo Antônio",
+      "detalhe": "Cristo Redentor",
+      "texto": "O mirante com o Cristo Redentor de Senador Canedo, visível do condomínio.",
+      "destino": "Morro Santo Antônio, Senador Canedo - GO",
+      "x": 70,
+      "y": 214,
+      "lado": "direita"
+    },
+    {
+      "id": "salut",
+      "categoria": "Saúde",
+      "nome": "Complexo de Saúde Salut",
+      "detalhe": "Futuro",
+      "texto": "Complexo de saúde previsto para a região.",
+      "destino": null,
+      "x": 938,
+      "y": 238,
+      "lado": "esquerda"
+    },
+    {
+      "id": "ifg",
+      "categoria": "Educação",
+      "nome": "IFG Campus Senador Canedo",
+      "texto": "Campus do Instituto Federal de Goiás em Senador Canedo.",
+      "destino": "IFG Campus Senador Canedo",
+      "x": 1726,
+      "y": 258,
+      "lado": "esquerda"
+    },
+    {
+      "id": "costa",
+      "categoria": "Compras",
+      "nome": "Costa Atacadão",
+      "texto": "Atacadista de Senador Canedo, no sentido oeste.",
+      "destino": "Costa Atacadão Senador Canedo",
+      "x": 34,
+      "y": 400,
+      "lado": "direita",
+      "borda": "esquerda"
+    },
+    {
+      "id": "hosp",
+      "categoria": "Saúde",
+      "nome": "Novo Hospital Municipal",
+      "texto": "Novo Hospital Municipal de Senador Canedo, no sentido leste.",
+      "destino": "Hospital Municipal de Senador Canedo",
+      "x": 1886,
+      "y": 880,
+      "lado": "esquerda",
+      "borda": "direita"
+    }
+  ]
+}

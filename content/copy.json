@@ -9,7 +9,8 @@
       "dia": "Dia",
       "noite": "Entardecer",
       "label": "Comparar a portaria de dia e ao entardecer"
-    }
+    },
+    "ctaSimular": "Quero simular minha condição"
   },
   "form": {
     "campos": [
@@ -77,17 +78,13 @@
     ],
     "fechamento": "Um condomínio feito para receber amigos, reunir a família e viver bons momentos todos os dias."
   },
-  "ruas": {
-    "titulo": "Inspirado na beleza dos ipês.",
-    "texto": "O Reserva dos Ipês carrega no nome e na paisagem a força de uma das árvores mais marcantes do cerrado.",
-    "intro": "São quatro ruas tranquilas e arborizadas, inspiradas nos ipês:",
-    "itens": [
-      "Ipê Branco",
-      "Ipê Rosa",
-      "Ipê Amarelo",
-      "Ipê Roxo"
-    ],
-    "fechamento": "Um projeto pensado para criar identidade, beleza e pertencimento em cada detalhe."
+  "entorno": {
+    "titulo": "Perto do que importa.",
+    "texto": "Estrategicamente localizado em uma área valorizada, perto de importantes estabelecimentos de Senador Canedo e com fácil acesso a Goiânia.",
+    "origem": "De onde você sai?",
+    "origemPlaceholder": "Seu bairro ou endereço, ex.: Setor Bueno, Goiânia",
+    "tracar": "Traçar rota",
+    "minhaLocalizacao": "Usar minha localização"
   },
   "condicoes": {
     "titulo": "Conquistar seu novo lar está mais fácil do que parece.",
@@ -96,11 +93,16 @@
       "Financiamento pela Caixa",
       "Enquadramento no Minha Casa Minha Vida",
       "Crédito associativo Caixa aprovado",
-      "Mensais pré-chaves a partir de R$ 750*",
-      "Sinal a partir de R$ 5.000*"
+      "Mensais pré-chaves a partir de R$ 860*",
+      "Sinal a partir de R$ 1.000*"
     ],
-    "cta": "Simular minha condição",
-    "disclaimer": "*Condições sujeitas à análise de crédito, disponibilidade de unidades e alterações sem aviso prévio. Consulte a equipe comercial."
+    "cta": "Simular minha condição"
+  },
+  "manifesto": {
+    "titulo": "Sua vida floresce aqui.",
+    "texto": "Assista ao manifesto do Reserva dos Ipês.",
+    "rotulo": "Manifesto",
+    "cta": "Assistir"
   },
   "fechamento": {
     "titulo": "Mais que uma casa. O seu lugar.",
@@ -121,5 +123,6 @@
     "local": "Parque dos Buritis | Senador Canedo",
     "contatoRapido": "Deixe seu WhatsApp e um consultor da Morais Engenharia fala com você.",
     "legal": "Imagens meramente ilustrativas."
-  }
+  },
+  "juridico": "Condições válidas até 30/11/2026 e limitadas às unidades participantes disponíveis. Sinal a partir de R$ 1.000 reais na primeira parcela e com mais três parcelas no valor de R$ 3.000 cada uma. Valores, sinal e parcelas referentes à unidade 10. Podendo variar conforme tipologia, unidade e plano de pagamento. Financiamento sujeito à análise e aprovação da instituição financeira; parcelamento direto sujeito à análise cadastral e de crédito pela incorporadora. Possibilidade de enquadramento no MCMV conforme regras vigentes. Imagens ilustrativas; itens entregues conforme Memorial Descritivo. RI R.3-64.602, registrado no Cartório de Registro de Imóveis da comarca de Senador Canedo – GO."
 }

@@ -7,12 +7,17 @@
     "bairro": "Parque dos Buritis",
     "cidade": "Senador Canedo",
     "uf": "GO",
-    "enderecoCompleto": null,
-    "mapsUrl": null
+    "logradouro": "R. RPB 24",
+    "cep": "75257-005",
+    "enderecoCompleto": "R. RPB 24, Parque dos Buritis, Senador Canedo, GO, 75257-005",
+    "lat": -16.6744137,
+    "lng": -49.1342415,
+    "mapsUrl": "https://maps.app.goo.gl/mYsKUDDx3kg936iJ7"
   },
   "contato": {
     "whatsapp": null,
     "instagram": null
   },
-  "politicaPrivacidadeUrl": null
+  "politicaPrivacidadeUrl": null,
+  "manifestoYoutubeId": "UWSziqUP2jA"
 }

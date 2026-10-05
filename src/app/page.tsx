@@ -1,8 +1,10 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { MobileDock } from "@/components/layout/MobileDock";
-import { Casas, Condicoes, Condominio, Contato, Hero, Localizacao, Ruas } from "@/components/sections/Sections";
+import { Casas, Condicoes, Condominio, Contato, Hero, Localizacao } from "@/components/sections/Sections";
 import { Lazer } from "@/components/sections/Lazer";
+import { Entorno } from "@/components/sections/Entorno";
+import { Manifesto } from "@/components/sections/Manifesto";
 
 // Ordem das seções = ordem da copy (docs/ARQUITETURA.md)
 export default function Home() {
@@ -15,8 +17,9 @@ export default function Home() {
         <Condominio />
         <Casas />
         <Lazer />
-        <Ruas />
+        <Entorno />
         <Condicoes />
+        <Manifesto />
         <Contato />
       </main>
       <Footer />

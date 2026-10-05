@@ -10,6 +10,8 @@ const ext = { target: "_blank", rel: "noopener" } as const;
 
 export function Hero() {
   const t = copy.hero;
+  // a mensal mais baixa dá motivo para o clique no simulador
+  const mensal = copy.condicoes.itens.map(splitValor).find((v) => v && /mensa/i.test(v[0]));
   return (
     <section className="hero" aria-labelledby="h1">
       <div className="wrap hero__grid">
@@ -19,11 +21,15 @@ export function Hero() {
           <p className="body">
             {t.descricao} {t.texto}
           </p>
-          <div>
+          <div className="hero__cta">
             <a className="btn" href="#contato">
               {t.cta}
             </a>
+            <a className="btn btn--lamp" href={site.simuladorUrl} {...ext}>
+              {t.ctaSimular}
+            </a>
           </div>
+          {mensal && <p className="hero__hint">{mensal.join(" ")}</p>}
         </div>
       </div>
       <HeroCompare dia={galeria.hero.dia} noite={galeria.hero.noite} labels={t.comparar} />
@@ -34,7 +40,6 @@ export function Hero() {
 export function Localizacao() {
   const t = copy.localizacao;
   const g = galeria.localizacao;
-  const maps = site.localizacao.mapsUrl;
   return (
     <section className="sec" id="localizacao" aria-labelledby="loc-h">
       <div className="wrap loc">
@@ -46,8 +51,8 @@ export function Localizacao() {
             </p>
           ))}
           <div>
-            {/* sem o link do Maps ainda, o botão leva para a vista aérea */}
-            <a className="btn btn--line" href={maps ?? "#mapa"} {...(maps ? ext : {})}>
+            {/* o mapa do entorno tem os pontos próximos e os atalhos para Maps, Waze e Uber */}
+            <a className="btn btn--line" href="#entorno">
               {t.cta}
             </a>
           </div>
@@ -123,40 +128,6 @@ export function Casas() {
   );
 }
 
-export function Ruas() {
-  const t = copy.ruas;
-  return (
-    <section className="sec" id="ruas" aria-labelledby="ruas-h" style={{ paddingTop: 0 }}>
-      <div className="wrap">
-        <div className="ruas__head">
-          <h2 className="h2" id="ruas-h">{t.titulo}</h2>
-          <div>
-            <p className="body">{t.texto}</p>
-            <p className="body" style={{ marginTop: 12 }}>
-              {t.intro}
-            </p>
-          </div>
-        </div>
-        <ul className="ruas">
-          {galeria.ruas.map((r) => (
-            <li className="rua" key={r.id}>
-              <DayNight
-                dia={{ img: r.card.dia, alt: `${r.card.alt} de dia` }}
-                noite={"noite" in r.card && r.card.noite ? { img: r.card.noite as string, alt: `${r.card.alt} ao entardecer` } : undefined}
-                sizes="(min-width:900px) 25vw, 50vw"
-              />
-              <p>{r.nome}</p>
-            </li>
-          ))}
-        </ul>
-        <p className="lamp-line" style={{ marginTop: 32 }}>
-          {t.fechamento}
-        </p>
-      </div>
-    </section>
-  );
-}
-
 export function Condicoes() {
   const t = copy.condicoes;
   const valores = t.itens.map(splitValor).filter(Boolean) as [string, string][];
@@ -187,7 +158,7 @@ export function Condicoes() {
               {t.cta}
             </a>
           </div>
-          <p className="disc">{t.disclaimer}</p>
+          <p className="disc">*{copy.juridico}</p>
         </div>
       </div>
     </section>

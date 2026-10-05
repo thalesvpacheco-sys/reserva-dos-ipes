@@ -42,10 +42,10 @@ export function Footer() {
             <h3>Onde fica</h3>
             <address>
               <span>{site.nome}</span>
-              {site.localizacao.enderecoCompleto && <span>{site.localizacao.enderecoCompleto}</span>}
+              <span>{site.localizacao.logradouro}</span>
               <span>{site.localizacao.bairro}</span>
               <span>
-                {site.localizacao.cidade}, {site.localizacao.uf}
+                {site.localizacao.cidade}, {site.localizacao.uf}, {site.localizacao.cep}
               </span>
               <span>Uma realização {site.construtora}</span>
             </address>
