@@ -4,10 +4,6 @@
 # Secrets opcionais (Settings > Secrets and variables > Actions > Secrets):
 #   NEXT_PUBLIC_MAKE_WEBHOOK_URL  (sem ele o formulário da LP não envia)
 #   NEXT_PUBLIC_META_PIXEL_ID, NEXT_PUBLIC_GA4_ID
-#
-# Variable (Settings > Secrets and variables > Actions > Variables):
-#   sem a variable     -> teaser em "/", LP nova em "/novo/" (sem indexação)
-#   LP_NA_RAIZ = true  -> virada: LP nova em "/", teaser em "/teaser/"
 name: Deploy Hostinger
 
 on:
@@ -43,15 +39,6 @@ jobs:
           NEXT_PUBLIC_MAKE_WEBHOOK_URL: ${{ secrets.NEXT_PUBLIC_MAKE_WEBHOOK_URL }}
           NEXT_PUBLIC_META_PIXEL_ID: ${{ secrets.NEXT_PUBLIC_META_PIXEL_ID }}
           NEXT_PUBLIC_GA4_ID: ${{ secrets.NEXT_PUBLIC_GA4_ID }}
-
-      - name: Teaser na raiz (até a virada)
-        if: vars.LP_NA_RAIZ != 'true'
-        working-directory: out
-        run: |
-          mkdir -p novo
-          mv index.html novo/index.html
-          cp teaser/index.html index.html
-          sed -i 's#<head>#<head><meta name="robots" content="noindex,nofollow">#' novo/index.html
 
       - uses: actions/checkout@v4
         with:

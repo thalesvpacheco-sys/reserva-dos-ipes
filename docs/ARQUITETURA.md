@@ -14,7 +14,7 @@
 nome, whatsapp (máscara), email, objetivo (morar/investir), valor de entrada, parcela ideal.
 
 ## Lançamento
-Teaser atual → `/teaser`; domínio passa a servir a LP nova. Conferir `.htaccess` + SSL.
+LP nova em `/` (06/10/2026); teaser antigo em `/teaser/` (noindex). Conferir `.htaccess` + SSL.
 
 ## Decisões de conteúdo (02/10/2026)
 - Seção de casas/plantas: sem plantas por enquanto. CTA = "Quero escolher minha casa!" → redireciona pro simulador (`content/site.json` → `simuladorUrl`).
