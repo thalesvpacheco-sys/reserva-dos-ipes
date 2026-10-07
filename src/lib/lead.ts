@@ -27,18 +27,30 @@ export function maskBRL(v: string) {
   return d ? `R$ ${Number(d).toLocaleString("pt-BR")}` : "";
 }
 
+/** Telefone sempre como 55 + DDD + número (mesmo formato do teaser), pra planilha ficar uniforme */
+function phone55(v: string) {
+  let d = digits(v);
+  if (d.length > 11 && d.startsWith("55")) d = d.slice(2);
+  return d ? `55${d}` : "";
+}
+
 export function sendLead(lead: Lead, origem: string) {
   const params = new URLSearchParams(window.location.search);
+  // todas as chaves vão sempre (vazias quando não se aplicam): o Make mapeia colunas fixas
   const body = new URLSearchParams({
+    nome: "",
+    telefone: "",
+    email: "",
+    objetivo: "",
+    entrada: "",
+    parcela: "",
     ...lead,
     origem,
     pagina: window.location.href,
     enviado_em: new Date().toISOString(),
   });
-  UTM_KEYS.forEach((k) => {
-    const v = params.get(k);
-    if (v) body.set(k, v);
-  });
+  body.set("telefone", phone55(body.get("telefone") ?? ""));
+  UTM_KEYS.forEach((k) => body.set(k, params.get(k) ?? ""));
 
   // form-urlencoded é uma "simple request": sem preflight de CORS e funciona com keepalive,
   // então o envio termina mesmo se a pessoa fechar a aba logo depois

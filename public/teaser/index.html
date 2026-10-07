@@ -566,11 +566,17 @@
         telefone: '55' + digits, /* sempre exatamente UM 55 na frente */
         email: get('email'),
         objetivo: objEl.value,
+        entrada: '',
+        parcela: '',
+        origem: 'teaser',
+        enviado_em: new Date().toISOString(),
         utm_source: params.get('utm_source') || '',
         utm_medium: params.get('utm_medium') || '',
         utm_campaign: params.get('utm_campaign') || '',
         utm_content: params.get('utm_content') || '',
         utm_term: params.get('utm_term') || '',
+        gclid: params.get('gclid') || '',
+        fbclid: params.get('fbclid') || '',
         pagina: window.location.href
       };
 
